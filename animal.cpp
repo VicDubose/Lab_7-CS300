@@ -18,6 +18,10 @@ std::string Animal::getType() {
   return type;
 };
 
+std::string Animal::getName() {
+  return name;
+}
+
 Dog::Dog(std::string cName, int cAge, std::string cBreed)
   : Animal(cName, cAge, "dog") {
   breed = cBreed;

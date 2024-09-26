@@ -15,6 +15,8 @@ class Animal {
   //returns animal's type
   std::string getType();
 
+  std::string getName();
+
  protected:
 
   std::string name;
