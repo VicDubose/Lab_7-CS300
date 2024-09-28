@@ -1,3 +1,7 @@
+# CS300-Tyr1jr1
+**Currently the code seems to work but I'm having a major issue trying to test the code without a main.cpp file and my clean command in my makefile doesn't seem to be operational.**
+This is a remote repo.
+
 ** Currently the code seems to work but im having a major issue trying to test the code without a main.cpp file and my clean command in my makefile doesnt seem to be operational ** 
 
 
@@ -11,3 +15,7 @@ wsl@Ghost:~/CS-300-Tyr1jr1/Labs/Lab_4$ make run
 make: Circular main.cpp <- main.cpp dependency dropped.
 ./deque_example
 Hello, World!
+=======
+# CS300-Tyr1jr1
+This is a remote depo
+
