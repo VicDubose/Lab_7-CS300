@@ -1,0 +1,17 @@
+# Makefile
+
+CXX = g++
+CXXFLAGS = -Wall -Werror -std=c++11
+OBJ = main.o trip.o
+EXEC = trip_calculator
+all: $(EXEC)
+
+$(EXEC): $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJ)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+# Run target
+run: all
+	./$(EXEC)
