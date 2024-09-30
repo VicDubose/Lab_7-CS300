@@ -1,0 +1,20 @@
+# Compiler
+CXX = g++
+TARGET =Event_Planner
+Base_SRC = Base.cpp
+USER_SRC = user.cpp
+Base_OBJ = $(Base_SRC:.cpp =.o)
+USER_OBJ = $(USER_SRC:.cpp=.o)
+all: $(TARGETS)
+Event_Planner: $(Base_OBJ) $(USER_OBJ)
+	$(CXX) $(Base_SRC) $(DEQUE_SRC) -o $@
+# Compile object files
+$(MAIN_OBJ): $(MAIN_SRC) deque.h user.h
+	$(CXX) -c $(MAIN_SRC)
+$(USER_OBJ): $(USER_SRC) user.h
+	$(CXX) -c $(USER_SRC)
+# Run target
+run: Event_Planner 
+clean:
+	rm -f $(USER_OBJ) $(TARGETS)
+

@@ -1,0 +1,31 @@
+// user should store all the info about users
+// I check if i need a User.h file or .o file
+// user.cpp
+#include "Base.h"
+#include <iostream>
+#include <vector>
+#include <string>
+
+// Function to display the number of attendees for each event
+void displayAttendanceCount(const std::vector<Event*>& events) {
+    std::cout << "\nAttendance Count for Each Event:\n";
+    for (const auto& event : events) {
+        std::cout << event->getDetails() << std::endl;
+        std::cout << "Number of Attendees: " << event->getAttendeeCount() << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+    }
+}
+
+// Example function for user actions
+void userActions(std::vector<Event*>& events) {
+    displayAttendanceCount(events);
+}
+        std::cout << "Number of Attendees: " << event->getAttendeeCount() << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+    }
+}
+
+// Example function for user actions
+void userActions(std::vector<Event*>& events) {
+    displayAttendanceCount(events);
+}
