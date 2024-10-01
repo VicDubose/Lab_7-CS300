@@ -25,7 +25,12 @@ void menu(std::vector<Event*>& events) {
     int currentDay, currentMonth;
 
     // Get current date from user
-    std::cout << "Enter current day (1-31): ";
+     std::cout << "\n";
+    std::cout << "Welcome to the Event Planner";
+    std::cout << "\n";
+    std::cout << "What is todays date ?";
+    std::cout << "\n*******************:\n";
+    std::cout << "Enter the current day: (1-31): ";
     std::cin >> currentDay;
     std::cout << "Enter current month (1-12): ";
     std::cin >> currentMonth;
@@ -37,11 +42,13 @@ void menu(std::vector<Event*>& events) {
     }
 
     while (true) {
-        std::cout << "\nMenu:\n";
+        std::cout << "\n*******************:\n";
+        std::cout << "\n** Event Planner **:\n";
         std::cout << "1. Add a new event\n";
         std::cout << "2. Display events\n";
         std::cout << "3. RSVP for an event\n";
         std::cout << "4. Exit\n";
+	std::cout << "\n*******************:\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
         std::cin.ignore(); // Clear newline character from the buffer
@@ -75,7 +82,7 @@ void menu(std::vector<Event*>& events) {
 
         } else if (choice == 3) {
             // Call user actions here if needed
-            // userActions(events);  // Uncomment if userActions should be invoked here
+	  //userActions(events); 
 
         } else if (choice == 4) {
             return; // Exit the menu
