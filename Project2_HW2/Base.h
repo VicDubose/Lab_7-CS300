@@ -1,3 +1,4 @@
+//Base.h
 #ifndef BASE_H
 #define BASE_H
 
@@ -5,34 +6,41 @@
 #include <vector>
 #include <iostream>
 
-class Event {
+class Concerts; 
+class Conferences; 
+
+class Base {
 private:
-    std::string eventName;
-    int eventDay;  // Day of the event
-    int eventMonth; // Month of the event
-    std::string location;
+    std::string eventName;   // Important for the name of attendees to be captured
+    int eventDay;            // Day of the event
+    int eventMonth;          // Month of the event
+    std::string location;    // Important to the search function / and Option 2 criteria
     std::vector<std::string> attendees; // List of attendees
 
 public:
-    Event(const std::string &name, int day, int month, const std::string &loc)
+    // Constructor
+    Base(const std::string &name, int day, int month, const std::string &loc)
         : eventName(name), eventDay(day), eventMonth(month), location(loc) {}
 
+    // Getter methods
+    std::string getLocation() const {
+        return location;
+    }
+    int getDay() const {
+        return eventDay;
+    }
+    int getMonth() const {
+        return eventMonth;
+    }
+    // Other methods
     std::string getDetails() const {
         return "Event: " + eventName + "\nDate: " + std::to_string(eventDay) + "/" + std::to_string(eventMonth) + "\nLocation: " + location;
-    }
-
-    bool isUpcoming(int currentDay, int currentMonth) const {
-        if (eventMonth > currentMonth) {
-            return true; // Event is in a future month
-        } else if (eventMonth == currentMonth) {
-            return eventDay > currentDay; // Event is later in the current month
-        }
-        return false; // Event is in the past
     }
 
     void rsvp(const std::string &attendee) {
         attendees.push_back(attendee);
     }
+    
     void displayAttendees() const {
         std::cout << "Attendees for " << eventName << ":\n";
         for (const auto& attendee : attendees) {
@@ -40,11 +48,16 @@ public:
         }
     }
 
-    // Method to get the number of attendees
     size_t getAttendeeCount() const {
         return attendees.size();
     }
+
+    virtual ~Base() {} // Virtual destructor for polymorphism (new add) 
+
+    void displayUI(std::vector<Base*>& events); // Declaration of displayUI
+
+    friend class Concerts;  
+    friend class Conferences; // Allowing friends to access private members/ Setter / Getter idea to get the private variables (Is this open closed concept or no ?
 };
 
-#endif // BASE_H
-
+#endif 

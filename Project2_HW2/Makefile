@@ -1,12 +1,11 @@
-# Compiler
 CXX = g++
 TARGET = Event_Planner
 
 BASE_SRC = Base.cpp
-USER_SRC = user.cpp
+USER_SRC = User.cpp
 BASE_OBJ = $(BASE_SRC:.cpp=.o)
 USER_OBJ = $(USER_SRC:.cpp=.o)
-HEADER = Base.h user.h
+HEADER = Base.h User.h
 
 # All target
 all: $(TARGET)
@@ -25,6 +24,5 @@ $(USER_OBJ): $(USER_SRC) $(HEADER)
 run: $(TARGET)
 	./$(TARGET)
 
-# Clean target
 clean:
 	rm -f $(BASE_OBJ) $(USER_OBJ) $(TARGET)
