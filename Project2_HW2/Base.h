@@ -32,7 +32,6 @@ public:
     int getMonth() const {
         return eventMonth;
     }
-    // Other methods
     std::string getDetails() const {
         return "Event: " + eventName + "\nDate: " + std::to_string(eventDay) + "/" + std::to_string(eventMonth) + "\nLocation: " + location;
     }

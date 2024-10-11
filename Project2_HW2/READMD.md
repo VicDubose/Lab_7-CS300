@@ -1,9 +1,9 @@
-THe next things that i have to figure out in the morning are until project completion. 
+### This Program is Called Event_Planner ###
 
-** the RSVP Option needs a Function in user that stores first and last names**
+The Event Planner program can be executed using the command ./Event_Planner. My name is Vic Tyrone Dubose, and I hope this information provides clarity on the project's structure.
+While I recognize the need for a README page to explain my code, I'm uncertain about what additional information to include.
 
-** THe RSVP option also somehow needs to store those people in a seprate vector or Set list to display with each event somehow reference one to another idk **
-
-** I need to redo the Interface and make it more clear that the user is inputing the day and month , and also some hwo make the interface more appealing ** 
-
-** finally the user Interface needs polish and to check that all questions have been answered so that this project is a success, and then test ** 
+In this implementation, I utilized friend classes to minimize the use of extensive setters and getters, as I'm not very proficient in their implementation.
+This approach serves as my workaround. The program features four menus, including one main menu and three sub-menus, all of which are implemented in the Base.cpp file.
+The design concept I chose for this project is the Strategy Pattern, which is prominently displayed in Menu Option 2. This menu allows users to search for events based on different criteria,
+including date, location, and type, as well as to display all events. Additionally, the use of friend classes allows for adherence to the open-closed principle,enabling me to add more friend classes to the program without altering the base code found in Base.h. this allows me to make small edits to the Base.cpp file to add an additional menu option in the various Sub-menus to avoid opening and altering major parts of the code.

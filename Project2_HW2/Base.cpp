@@ -23,7 +23,7 @@ bool isValidDate(int day, int month) {
 }
 
 void displayEvents(const std::vector<Base*>& events) {
-    std::cout << "-----------------------------------" << std::endl;
+    std::cout << "-----------------------------------" << std::endl; // Helps with Visual Clarity
     for (const auto& event : events) {
         std::cout << event->getDetails() << std::endl;
         event->displayAttendees();
@@ -55,12 +55,12 @@ void displayUI(std::vector<Base*>& events) {
         std::cout << "Invalid current date input. Please restart the program.\n";
         return;
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
     while (true) {
-        std::cout << "\n** Event Planner **:\n";
-        std::cout << "1. Add a new event\n";
-        std::cout << "2. Display events\n";
+        std::cout << "\n*** Event Planner ***\n";
+        std::cout << "1. Add a new event Menu\n";
+        std::cout << "2. Display events Menu\n";
         std::cout << "3. RSVP for an event\n";
         std::cout << "4. Display Attendance count\n";
         std::cout << "5. Exit\n";
@@ -189,7 +189,7 @@ void displayUI(std::vector<Base*>& events) {
                     std::cout << "Invalid option. Please try again.\n";
                 }
             }
-        } else if (choice == 3) { // Option 3 in menu RSVP function (needs the UserName variable
+        } else if (choice == 3) { // Option 3 in menu RSVP function (needs the UserName variable)
             std::string userName, eventName;
             std::cout << "Enter your name: ";
             std::getline(std::cin, userName);
@@ -207,7 +207,7 @@ void displayUI(std::vector<Base*>& events) {
             if (!found) {
                 std::cout << "Event not found.\n";
             }
-        } else if (choice == 4) { // Shows whos going to all events helps if search is to much
+        } else if (choice == 4) { // Shows whos going to all events helps Shit information if search is to specific
             displayAttendanceCount(events);
         } else if (choice == 5) {
             for (auto& event : events) {
