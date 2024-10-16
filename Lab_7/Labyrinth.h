@@ -13,7 +13,6 @@ enum class Item {
  */
 struct MazeCell {
     Item whatsHere; // Which item, if any, is present.
-
     MazeCell* north;
     MazeCell* south;
     MazeCell* east;
@@ -29,3 +28,6 @@ struct MazeCell {
  * and you can't move in directions that don't exist in the maze.
  */
 bool isPathToFreedom(MazeCell* start, const std::string& moves);
+
+// Function to initialize the normal maze
+MazeCell* initializeNormalMaze(); 
