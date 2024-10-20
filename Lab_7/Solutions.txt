@@ -1,4 +1,511 @@
-Assuming you have not yet modified the string kYourName, the two sequences you want are
+
+### Full Lab_7 Notes and Review for the amazing partner ###
+
+- My partners' full name is Alaura Buzbee (like the Northern Lights and the worker bee), and my name is (Vic) Victor Tyrone Dubose.
+
+- what ill will put in for const std::string kYourName = "TODO: Replace this string with your name."; : Victor Dubose Alaura Buzbee.
+
+const std::string kYourName = "Victor Dubose Alaura Buzbee.";
+
+- Dont forget you can Convert all commands and terminal output into a Word/notepad document using the save button in MobaXterm to simplify note taking.
+
+- Break Milestones up into accomplishable dates (Milestone 1 due by this Friday 10/18)(Milestone 2 10/22)(Milestone 3 10/24 with 2 days to clean)
+
+- Git-Hub repo information:https://github.com/VicDubose/CS300-Tyr1jr1/tree/ae1fa939c4893823f971543c378a39c9826e7e22/Lab_7
+1. will ask Joe about how to create a sub repo aka/ or give access to the current repo to a teammate.
+
+- Need to get Alaura's git-hub information and invite her to the repo (I forgot this step during lab and got overwhelmed not to mention the pizza was distracting(Big back activities))
+
+- next, we will go over Alaura's great ideas : 
+1. We need a check to tell if our move is a legal move (understand maze size)
+2. Check each Cell(using the Whatshere variable located in the Labyrinth.h)
+3. We need an Input that passes through possible variables into the path to get output.
+
+==============================================================================================
+### The revised and stripped-down information for Milestone 1 to help with readability ###
+                     ## Milestone 1: Check Paths to Freedom ##
+
+**Task:** Implement a function to check if a given path in a maze is legal and collects all required items.
+
+**Function to Implement:**
+- bool isPathToFreedom(MazeCell* startLocation, const std::string& path);`
+
+**Input:**
+- startLocation: Starting cell in the maze (not null).
+- path: A string composed of 'N', 'S', 'E', 'W'.
+
+**Output:**
+- Returns true if the path is legal and collects all three items: Spellbook, Wand, and Potion. Returns false otherwise.
+
+### Steps to Implement:
+
+1. **Implement the Function:**
+   - Write the isPathToFreedom function in Labyrinth.cpp.
+
+2. **Check Path Validity:**
+   - Ensure the path consists only of valid moves based on the current MazeCell.
+   - Handle the edge case where an illegal step is attempted after collecting all items.
+
+3. **Track Collected Items:**
+   - Keep track of whether Spellbook, Wand, and Potion have been collected.
+   - The order of item collection does not matter.
+
+4. **Test the Implementation:**
+   - Use the provided tests to verify functionality.
+   - Optionally write additional tests.
+
+### Notes:
+- The maze structure may not guarantee bidirectional links (e.g., if you can go North, you might not be able to go South back).
+- Paths may revisit locations, including collecting items multiple times.
+- No new MazeCell objects should be created; use existing ones.
+- You can choose to implement the function iteratively or recursively.
+- Do not modify the maze or item locations during the function execution. 
+
+==============================================================================================
+ ### Second attempt to implement Alaura's Ideas (8th try) ###
+// pulling the main out to implement it in the Main.cpp currently causing errors 
+// need to make edits to the Main.cpp to run test of maze
+// removing crazy maze portion don't forget to re-add it once 
+#include "Labyrinth.h"
+#include <iostream>
+#include <string>
+
+bool isValidMove(MazeCell* cell, char move) { // Alaura's great ideas to check for invalid move.
+    switch (move) {
+        case 'N': return cell->north != nullptr;
+        case 'S': return cell->south != nullptr;
+        case 'E': return cell->east != nullptr;
+        case 'W': return cell->west != nullptr;
+        default: return false; // Invalid move
+    }
+}
+
+MazeCell* move(MazeCell* cell, char move) {
+    switch (move) {
+        case 'N': return cell->north;
+        case 'S': return cell->south;
+        case 'E': return cell->east;
+        case 'W': return cell->west;
+        default: return nullptr; // Invalid move
+    }
+}
+
+bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+    // Variables to track the current position and collected items
+    MazeCell* current = start;
+    bool hasSpellbook = false;
+    bool hasWand = false;
+    bool hasPotion = false;
+
+    // Iterate through each move in the path (Alaura's great ideas  Check each Cell)
+    for (char move : moves) {
+        // Check if the current cell is valid
+        if (current == nullptr) {
+            return false; // Current cell is null, illegal move
+        }
+
+        // Check if the move is valid
+        if (!isValidMove(current, move)) {
+            return false; // Illegal move
+        }
+
+        // Move to the next cell
+        current = move(current, move);
+        
+        // Check the items in the current cell
+        if (current->whatsHere == Item::SPELLBOOK) {
+            hasSpellbook = true;
+        }
+        if (current->whatsHere == Item::WAND) {
+            hasWand = true;
+        }
+        if (current->whatsHere == Item::POTION) {
+            hasPotion = true;
+        }
+    }
+
+    // Return true if all items were collected
+    return hasSpellbook && hasWand && hasPotion;
+}
+
+==============================================================================================
+
+** what does this mean ? how can it help ? ***
+1. ** Setting Breakpoints **:
+You set a breakpoint at line 19 in Main. cpp where the main function begins. This means that GDB will pause execution when it reaches this line, allowing you to inspect the program state.
+
+2. ** Segmentation Fault **:
+The crucial line here is:
+	Program received signal SIGSEGV, Segmentation fault.
+	This indicates that your program attempted to access memory it shouldn't have, which usually occurs when trying to dereference a null or invalid pointer.
+
+3. ** Inspecting Pointers **:
+	When you printed various pointers, you got the following outputs:
+
+(gdb) print normalMazeStart
+$1 = (MazeCell *) 0x555555587f30
+(gdb) print normalMazeStart->south
+$2 = (MazeCell *) 0x0
+(gdb) print normalMazeStart->north
+$3 = (MazeCell *) 0x0
+(gdb) print normalMazeStart->east
+$4 = (MazeCell *) 0x555555588090
+(gdb) print normalMazeStart->west
+$5 = (MazeCell *) 0x0
+(gdb) print normalMazeStart->east->north
+$6 = (MazeCell *) 0x0
+(gdb) print normalMazeStart->east->south
+$7 = (MazeCell *) 0x555555588150
+(gdb) print normalMazeStart->east->west
+$8 = (MazeCell *) 0x555555587f30
+
+** Here’s what these pointer values mean **:
+normalMazeStart: This pointer is valid and points to a MazeCell object at memory address 0x555555587f30.
+normalMazeStart->south: This is nullptr (or 0), meaning there is no MazeCell in the south direction from normalMazeStart. Trying to access or delete this pointer causes a segmentation fault.
+    normalMazeStart->north and normalMazeStart->west are also nullptr.
+    normalMazeStart->east is valid, pointing to another MazeCell at address 0x555555588090.
+    The north and south pointers for normalMazeStart->east are nullptr, while normalMazeStart->east->west points back to normalMazeStart.
+
+==============================================================================================
 
 Path out of labyrinth:        SESSWENNENSESS
 Path out of twisty labyrinth: ESWEESWENE
+
+Item locations: 93824992445024 93824992444544 93824992445168 normal labyrinth. //originally inputted to tell the locations of the magical items for some identification 
+
+Item locations: 93824992452016 93824992451968 93824992451824 twisty labyrinth.
+
+
+print start->south->east->south->south->west->east->north->north->east->north->south->east->south->south
+
+14 possible moves to solve the puzzle?
+
+
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east->south->south
+$17 = (MazeCell *) 0x5555555882f0
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east->south->south->north
+$18 = (MazeCell *) 0x555555588230
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east->south->south->east
+$19 = (MazeCell *) 0x0
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east->south->south->west
+$20 = (MazeCell *) 0x0
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east->south
+$21 = (MazeCell *) 0x555555588230
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south->east
+$22 = (MazeCell *) 0x555555588170
+(gdb) print start->south->east->south->south->west->east->north->north->east->north->south
+$23 = (MazeCell *) 0x555555588140
+(gdb) print start->south->east->south->south->west->east->north->north->east->north
+$24 = (MazeCell *) 0x555555588080
+(gdb) print start->south->east->south->south->west->east->north->north->east
+$25 = (MazeCell *) 0x555555588140
+(gdb) print start->south->east->south->south->west->east->north->north
+$26 = (MazeCell *) 0x555555588110
+(gdb) print start->south->east->south->south->west->east->north
+$27 = (MazeCell *) 0x5555555881d0 *
+(gdb) print start->south->east->south->south->west->east
+$28 = (MazeCell *) 0x555555588290
+(gdb) print start->south->east->south->south->west
+$29 = (MazeCell *) 0x555555588260
+(gdb) print start->south->east->south->south
+$30 = (MazeCell *) 0x555555588290
+(gdb) print start->south->east->south
+$31 = (MazeCell *) 0x5555555881d0 *
+(gdb) print start->south->east
+$32 = (MazeCell *) 0x555555588110
+(gdb) print start->south
+$33 = (MazeCell *) 0x5555555880e0 *
+(gdb) print start
+$34 = (MazeCell *) 0x555555587ef0 *
+(gdb)
+
+
+The path out of twisty labyrinth: ESWEESWENE
+(gdb) print start->east->south->west->east->east->south->west->east->north->east
+
+Breakpoint 1, isPathToFreedom (start=0x555555587fc0, moves="ESWEESWENE") at Labyrinth.cpp:5
+5       bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+(gdb) print start
+$4 = (MazeCell *) 0x555555587fc0
+(gdb) ^[[200~print start->east->south->west->east->east->south->west->east->north->east
+Undefined command: "".  Try "help".
+(gdb) print start->east->south->west->east->east->south->west->east->north->east
+$5 = (MazeCell *) 0x555555589cf0 *
+(gdb) print start->east->south->west->east->east->south->west->east->north
+$6 = (MazeCell *) 0x555555587ff0 *
+(gdb) print start->east->south->west->east->east->south->west->east
+$7 = (MazeCell *) 0x555555587f90
+(gdb) print start->east->south->west->east->east->south->west
+$8 = (MazeCell *) 0x555555589d80
+(gdb) print start->east->south->west->east->east->south
+$9 = (MazeCell *) 0x555555587f90
+(gdb) print start->east->south->west->east->east
+$10 = (MazeCell *) 0x555555589cc0
+(gdb) print start->east->south->west->east
+$11 = (MazeCell *) 0x555555588320
+(gdb) print start->east->south->west
+$12 = (MazeCell *) 0x555555589db0 * 
+(gdb) print start->east->south
+$13 = (MazeCell *) 0x555555588320
+(gdb) print start->east
+$14 = (MazeCell *) 0x555555589d20 * 
+(gdb) print start
+$15 = (MazeCell *) 0x555555587fc0 * Duplicate
+(gdb)
+
+
+
+** Hypothesis **
+1. Hypothesis and Code Alteration:
+
+    After analyzing the conclusion, I suspect that the magical items correspond to any MazeCell code that includes a letter. Examples include:
+        0x5555555880e0
+        0x5555555881d0
+        0x555555587ef0
+    I will proceed to alter my code using these names, but I will keep a local copy of the original code. This way, if I cannot resolve the issues, I can revert to the default version.
+    I believe my hypothesis is correct, so I will make a copy of the code, implement the alterations, and then push the results to Lab_7 on GitHub.
+
+2. Wild Card Option Check:
+
+    Before finalizing the code changes, I will check the wild card option to verify if the trend remains consistent.
+
+3. Navigation Reminder:
+
+    Use a compass rose to ensure you are not moving back and forth unnecessarily.
+==============================================================================================
+### New Information found ### (Hypothesis tested) (Default Labyrinth code used for testing)
+
+** needed commands after alteration **:
+1. gdb ./Labyrinth
+2. (gdb) break isPathToFreedom
+3.(gdb) start
+4.(gdb) continue
+5. print start
+
+                                  ** new main **
+
+#include "MazeGenerator.h"
+#include "Labyrinth.h"
+#include <iostream>
+#include <string>
+
+/* Change this constant to contain your name. */
+const std::string kYourName = "Victor Dubose Alaura Buzbee.";
+
+/* Change these constants to contain the paths out of your mazes. */
+const std::string kPathOutOfNormalMaze = "SESSWENNENSESS";  // Updated path
+const std::string kPathOutOfTwistyMaze = "ESWEESWENE";      // Updated path
+
+int main() {
+    /* Generate the maze. */
+    MazeCell* startLocation = mazeFor(kYourName);
+    
+    /* Set a breakpoint here to explore your maze! */
+    if (isPathToFreedom(startLocation, kPathOutOfNormalMaze)) {
+        std::cout << "Congratulations! You've found a way out of your labyrinth." << std::endl;
+    } else {
+        std::cout << "Sorry, but you're still stuck in your labyrinth." << std::endl;
+    }
+    
+    /* Generate the twisty maze. */
+    MazeCell* twistyStartLocation = twistyMazeFor(kYourName);
+    
+    /* Set a breakpoint here to explore your twisty maze! */
+    if (isPathToFreedom(twistyStartLocation, kPathOutOfTwistyMaze)) {
+        std::cout << "Congratulations! You've found a way out of your twisty labyrinth." << std::endl;
+    } else {
+        std::cout << "Sorry, but you're still stuck in your twisty labyrinth." << std::endl;
+    }
+    
+    return 0;
+}
+
+                              ** New Labyrinth.cpp file **
+
+#include "Labyrinth.h"
+#include <iostream>
+#include <vector> // Include vector header
+
+bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+    MazeCell* current = start;
+    std::vector<size_t> itemLocations; // To store the locations of magical items
+
+    for (char move : moves) {
+        // Move according to the direction specified by `move`
+        if (move == 'N' && current->north) {
+            current = current->north;
+        } else if (move == 'S' && current->south) {
+            current = current->south;
+        } else if (move == 'E' && current->east) {
+            current = current->east;
+        } else if (move == 'W' && current->west) {
+            current = current->west;
+        } else {
+            return false; // Invalid move, out of bounds
+        }
+
+        // Check for items
+        if (current->whatsHere != Item::NOTHING) {
+            itemLocations.push_back(reinterpret_cast<size_t>(current)); // Store the address of the current cell
+            current->whatsHere = Item::NOTHING; // Assume you take the item
+        }
+    }
+
+    // Display the locations of the items collected
+    std::cout << "Item locations: ";
+    for (size_t loc : itemLocations) {
+        std::cout << loc << " "; // Print addresses (or you can convert them to indices if needed)
+    }
+    std::cout << std::endl;
+
+    return true; // Assume path leads to freedom if no invalid moves were made
+}
+
+==============================================================================================
+### all information past now is for the final testing phase to locate both the correct paths ###
+
+(gdb) print start->south->east->south->south
+
+Path out of labyrinth: SES
+
+** how I come to this conclusion below **:
+
+(gdb) break isPathToFreedom
+Breakpoint 1 at 0x267e: file Labyrinth.cpp, line 5.
+(gdb) start
+Temporary breakpoint 2 at 0x36dc: file Main.cpp, line 15.
+Starting program: /home/wsl/CS-300-Tyr1jr1/Lab_7/Labyrinth
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main () at Main.cpp:15
+15          MazeCell* startLocation = mazeFor(kYourName);
+(gdb) continue
+Continuing.
+
+Breakpoint 1, isPathToFreedom (start=0x555555587ef0, moves="SESSWENNENSESS") at Labyrinth.cpp:5
+5       bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+(gdb) print start
+$1 = (MazeCell *) 0x555555587ef0 *
+(gdb) print start->east
+$2 = (MazeCell *) 0x0
+(gdb) print start->west
+$3 = (MazeCell *) 0x0
+(gdb) print start->south
+$4 = (MazeCell *) 0x5555555880e0 *
+(gdb) print start->north
+$5 = (MazeCell *) 0x0
+(gdb) print start->south->south
+$6 = (MazeCell *) 0x0
+(gdb) print start->south->north
+$7 = (MazeCell *) 0x555555587ef0
+(gdb) print start->south->east
+$8 = (MazeCell *) 0x555555588110
+(gdb) print start->south->east->south
+$9 = (MazeCell *) 0x5555555881d0 *
+(gdb) print start->south->east->south->south ( the finished path that collected all 3 items)
+$10 = (MazeCell *) 0x555555588290
+(gdb) print start->south->east->south->south->south
+$11 = (MazeCell *) 0x0
+(gdb) print start->south->east->south->south->west
+$12 = (MazeCell *) 0x555555588260
+(gdb) print start->south->east->south->south->west->west
+$13 = (MazeCell *) 0x0
+(gdb) print start->south->east->south->south->west->Quit
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 51895] will be killed.
+
+Quit anyway? (y or n) y
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ gdb ./Labyrinth
+
+==============================================================================================
+### Now on to the twisty maze ###
+
+gdb) print start->east->south->south->south->south->south->south->south->south
+Path out of twisty labyrinth: ESSSSS
+
+
+(gdb) break isPathToFreedom
+Breakpoint 1 at 0x267e: file Labyrinth.cpp, line 5.
+(gdb) start
+Temporary breakpoint 2 at 0x36dc: file Main.cpp, line 15.
+Starting program: /home/wsl/CS-300-Tyr1jr1/Lab_7/Labyrinth
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main () at Main.cpp:15
+15          MazeCell* startLocation = mazeFor(kYourName);
+(gdb) continue
+Continuing.
+
+Breakpoint 1, isPathToFreedom (start=0x555555587ef0, moves="SESSWENNENSESS") at Labyrinth.cpp:5
+5       bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+(gdb) continue
+Continuing.
+Item locations: 93824992445024 93824992444544 93824992445168
+Congratulations! You've found a way out of your labyrinth.
+
+Breakpoint 1, isPathToFreedom (start=0x555555587fc0, moves="ESWEESWENE") at Labyrinth.cpp:5
+5       bool isPathToFreedom(MazeCell* start, const std::string& moves) {
+(gdb) print start
+$1 = (MazeCell *) 0x555555587fc0 *
+(gdb) print start->east
+$2 = (MazeCell *) 0x555555589d20 *
+(gdb) print start->east->east
+$3 = (MazeCell *) 0x0
+(gdb) print start->east->south
+$4 = (MazeCell *) 0x555555588320
+(gdb) print start->east->south->south
+$5 = (MazeCell *) 0x555555589d50 *
+(gdb) print start->east->south->south->south
+$6 = (MazeCell *) 0x555555587ff0 *
+(gdb) print start->east->south->south->south->south
+$7 = (MazeCell *) 0x555555587f90 *
+(gdb) print start->east->south->south->south->south->south
+$8 = (MazeCell *) 0x555555589cc0 * (so turn here)
+(gdb) print start->east->south->south->south->south->south->south
+$9 = (MazeCell *) 0x555555587f90 (repeated)
+(gdb) print start->east->south->south->south->south->south->south->south
+$10 = (MazeCell *) 0x555555589cc0 (repeated)
+(gdb) print start->east->south->south->south->south->south->south->south->south
+$11 = (MazeCell *) 0x555555587f90 (Repeated)
+(gdb)
+
+(gdb) print start->west->south->south->west
+
+WSSW = solution.
+
+==============================================================================================
+### Solutions found ###
+
+After inputting the solutions below for our new maze :
+Path out of labyrinth: SES
+Path out of twisty labyrinth: WSSW
+
+Congratulations message received at 10/20/2024 at 7:00am. 
+
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ ./labyrinth
+-bash: ./labyrinth: No such file or directory
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ make run
+g++ -g -c Main.cpp -o Main.o  # Added -g flag here
+g++ -g -o Labyrinth Labyrinth.o Main.o MazeGenerator.o  # Added -g flag here
+./Labyrinth
+Item locations:
+Congratulations! You've found a way out of your labyrinth.
+Item locations: 94273889172752
+Congratulations! You've found a way out of your twisty labyrinth.
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ g++ -g -o Labyrinth Labyrinth.o Main.o MazeGenerator.o  # Added -g flag here
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ g++ -g -c Main.cpp -o Main.o  # Added -g flag here
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ ./labyrinth
+-bash: ./labyrinth: No such file or directory
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ emacs Makefile
+wsl@Ghost:~/CS-300-Tyr1jr1/Lab_7$ ./Labyrinth
+Item locations:
+Congratulations! You've found a way out of your labyrinth.
+Item locations: 94054341745936
+Congratulations! You've found a way out of your twisty labyrinth.
+
+pushing all changes to git hub and updating solutions with Team notes. 
+
