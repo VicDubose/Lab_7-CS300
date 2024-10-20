@@ -1,11 +1,8 @@
-# Compiler
-CXX = g++
-
-# Source files
-SRCS = Labyrinth.cpp Main.cpp MazeGenerator.cpp
-
 # Target executable
 TARGET = Labyrinth
+
+# Source files
+SRCS = $(wildcard *.cpp)  # Automatically find all .cpp files
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
@@ -21,9 +18,13 @@ $(TARGET): $(OBJS)
 %.o: %.cpp
 	$(CXX) -g -c $< -o $@  # Added -g flag here
 
+# Run the target
+run: all
+	./$(TARGET)
+
 # Clean up
 clean:
 	rm -f $(OBJS) $(TARGET)
 
 # Phony targets
-.PHONY: all clean
+.PHONY: all clean run
